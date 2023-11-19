@@ -45,5 +45,7 @@ public class Person {
         email = person.email;
     }
 
+    public Person() {
+    }
 }
 

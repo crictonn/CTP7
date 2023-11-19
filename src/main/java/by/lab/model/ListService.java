@@ -16,4 +16,9 @@ public class ListService {
         return groupList;
     }
 
+    static public void addPerson(Person person) {
+        groupList.add(new Person(person));
+    }
+
+
 }

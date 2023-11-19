@@ -39,5 +39,11 @@ public class Person {
         this.phone = phone;
         this.email = email;
     }
+    public Person(Person person) {
+        name = person.name;
+        phone = person.phone;
+        email = person.email;
+    }
+
 }
 

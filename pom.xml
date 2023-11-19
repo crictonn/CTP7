@@ -4,6 +4,10 @@
   <groupId>org.example</groupId>
   <artifactId>CTP7</artifactId>
   <packaging>war</packaging>
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+  </properties>
   <version>1.0-SNAPSHOT</version>
   <name>CTP7 Maven Webapp</name>
   <url>http://maven.apache.org</url>
@@ -13,6 +17,18 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>RELEASE</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <build>

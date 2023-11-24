@@ -1,39 +1,51 @@
 package by.lab.filter;
 
+import by.lab.command.session.SessionAttribute;
+import by.lab.util.pages.Page;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 
 
-@WebFilter(filterName = "LoginRequiredFilter", urlPatterns = "/GroupListServlet")
+@WebFilter(urlPatterns = "/controller")
 public class LoginRequiredFilter implements Filter {
-    public void destroy() {
+    private static final String COMMAND = "command";
+    private static final String WELCOME = "welcome";
+    private static final String ERROR_MESSAGE = "error_message";
+    private static final String ERROR_TEXT = "Нет авторизации для выполнения данной команды";
+    private static final Logger logger = LogManager.getLogger(LoginRequiredFilter.class.getName());
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        String command = request.getParameter(COMMAND);
+        logger.info("Filter is working " + COMMAND + "= " + command);
+        if (!command.equals(WELCOME)) {
+            chain.doFilter(req, resp);
+        } else {
+            if (request.getSession().getAttribute(SessionAttribute.NAME) != null) {
+                chain.doFilter(req, resp);
+            } else {
+                request.setAttribute(ERROR_MESSAGE, ERROR_TEXT);
+                request.getRequestDispatcher(Page.ERROR_PAGE.getPage()).forward(req, resp);
+            }
+        }
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+    public void destroy() {
 
-        HttpServletRequest httpReq = (HttpServletRequest) request;
-        HttpServletResponse httpResp = (HttpServletResponse) response;
-        HttpSession session = httpReq.getSession();
-        if (session.getAttribute("name")!=null) {
-            chain.doFilter(request, response);
-        }
-        else {
-
-// httpResp.sendRedirect(httpReq.getContextPath() + "/LoginServlet");
-            session.invalidate();
-            request.getRequestDispatcher("LoginServlet").forward(request,
-                    response);
-        }
-
-    }
-
-
-    public void init (FilterConfig config) throws ServletException {
     }
 }
+
 
